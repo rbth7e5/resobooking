@@ -18,6 +18,7 @@ export default function Home() {
         endAccessor="end"
         style={{height: 800}}
         selectable={true}
+        defaultView={'week'}
         views={['week']}
       />
     </Container>
