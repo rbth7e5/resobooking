@@ -43,57 +43,59 @@ export default function Admin() {
             ) : (
               <List>
                 {doc.value
-                    .sort((a,b) => { // reverse order date
-                        return b.start.dateTime - a.start.dateTime;
-                    })
-                    .sort((a,b) => { // pending on top
-                        if(a.status===b.status) return 0;
-                        if(a.status===undefined) return -1;
-                        return 1;
-                    })
-                    .map((e, i) => (
-                      <ListItem key={i}>
-                        <ListItemText
-                          primary={`Song: ${e.summary} Name: ${e.name} Email: ${e.email}`}
-                          secondary={` ${moment(e.start.dateTime.toDate()).format(
-                            "D MMM YY HH:mm"
-                          )} to ${moment(e.end.dateTime.toDate()).format(
-                            "D MMM YY HH:mm"
-                          )} ${e.location}
+                  .sort((a, b) => {
+                    // reverse order date
+                    return b.start.dateTime - a.start.dateTime;
+                  })
+                  .sort((a, b) => {
+                    // pending on top
+                    if (a.status === b.status) return 0;
+                    if (a.status === undefined) return -1;
+                    return 1;
+                  })
+                  .map((e, i) => (
+                    <ListItem key={i}>
+                      <ListItemText
+                        primary={`Song: ${e.summary} Name: ${e.name} Email: ${e.email}`}
+                        secondary={` ${moment(e.start.dateTime.toDate()).format(
+                          "D MMM YY HH:mm"
+                        )} to ${moment(e.end.dateTime.toDate()).format(
+                          "D MMM YY HH:mm"
+                        )} ${e.location}
                           Recur: ${e.recur} Weeks: ${e.num_weeks}`}
-                        />
-                        {e.status ? (
-                          e.status
-                        ) : (
-                          <ListItemIcon>
-                            <IconButton
-                              onClick={() => {
-                                updateStore(doc.ids[i], {
-                                  status: "rejected",
-                                });
-                              }}
-                            >
-                              <CancelIcon />
-                            </IconButton>
-                          </ListItemIcon>
-                        )}
-                        {e.status ? null : (
-                          <ListItemSecondaryAction>
-                            <IconButton
-                              edge="end"
-                              onClick={async () => {
-                                await approveEvent(accessToken, e);
-                                updateStore(doc.ids[i], {
-                                  status: "approved",
-                                });
-                              }}
-                            >
-                              <ThumbUpIcon />
-                            </IconButton>
-                          </ListItemSecondaryAction>
-                        )}
-                      </ListItem>
-                    ))}
+                      />
+                      {e.status ? (
+                        e.status
+                      ) : (
+                        <ListItemIcon>
+                          <IconButton
+                            onClick={() => {
+                              updateStore(doc.ids[i], {
+                                status: "rejected",
+                              });
+                            }}
+                          >
+                            <CancelIcon />
+                          </IconButton>
+                        </ListItemIcon>
+                      )}
+                      {e.status ? null : (
+                        <ListItemSecondaryAction>
+                          <IconButton
+                            edge="end"
+                            onClick={async () => {
+                              await approveEvent(accessToken, e);
+                              updateStore(doc.ids[i], {
+                                status: "approved",
+                              });
+                            }}
+                          >
+                            <ThumbUpIcon />
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      )}
+                    </ListItem>
+                  ))}
               </List>
             );
           }}

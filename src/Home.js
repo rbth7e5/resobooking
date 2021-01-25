@@ -128,6 +128,10 @@ export default function Home() {
       alert("please fill in all fields");
       return;
     }
+    if (!data.email.includes("@")) {
+      alert("please enter valid email");
+      return;
+    }
     if (data.recur) {
       if (data.num_weeks === "") {
         alert("please enter number of weeks or uncheck recurring");
@@ -146,19 +150,27 @@ export default function Home() {
   const writeToFirebase = () => {
     const num_weeks = data.recur ? parseInt(data.num_weeks) : 1;
     const db = firebase.firestore();
-    for(var i=0;i<num_weeks;i++) {
-        db.collection("events")
-          .doc()
-          .set({
-            name: data.name,
-            email: data.email,
-            start: { dateTime: moment(data.start).add(7*i,'days').toDate() },
-            end: { dateTime: moment(data.end).add(7*i,'days').toDate() },
-            location: parseLocation(),
-            summary: data.song,
-            recur: data.recur,
-            num_weeks: data.recur ? parseInt(data.num_weeks) : null,
-          });
+    for (var i = 0; i < num_weeks; i++) {
+      db.collection("events")
+        .doc()
+        .set({
+          name: data.name,
+          email: data.email,
+          start: {
+            dateTime: moment(data.start)
+              .add(7 * i, "days")
+              .toDate(),
+          },
+          end: {
+            dateTime: moment(data.end)
+              .add(7 * i, "days")
+              .toDate(),
+          },
+          location: parseLocation(),
+          summary: data.song,
+          recur: data.recur,
+          num_weeks: data.recur ? parseInt(data.num_weeks) : null,
+        });
     }
   };
 
