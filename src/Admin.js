@@ -45,7 +45,7 @@ export default function Admin() {
                 {doc.value.map((e, i) => (
                   <ListItem key={i}>
                     <ListItemText
-                      primary={`${e.summary}`}
+                      primary={`Song: ${e.summary} Name: ${e.name} Email: ${e.email}`}
                       secondary={` ${moment(e.start.dateTime.toDate()).format(
                         "D MMM YY HH:mm"
                       )} to ${moment(e.end.dateTime.toDate()).format(
