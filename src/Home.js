@@ -211,13 +211,14 @@ export default function Home() {
     />
   ) : null;
 
+  const view = window.innerWidth < 800 ? "day" : "week";
   return (
     <Container>
       <p>
-        Please select your desired timeslot by dragging on the calendar. If you
-        are planning to practice in school, make sure your slot doesn't clash
-        with other slots that are also in school! Max 2 hours pls don't be
-        greedy.
+        Please select your desired timeslot by dragging on the calendar (On
+        mobile, tap and hold before dragging). If you are planning to practice
+        in school, make sure your slot doesn't clash with other slots that are
+        also in school! Max 2 hours pls don't be greedy.
       </p>
       <Button component={Link} to="/admin">
         Admin Access
@@ -242,8 +243,8 @@ export default function Home() {
               endAccessor="end"
               style={{ height: 800 }}
               selectable={true}
-              defaultView={"week"}
-              views={["week"]}
+              defaultView={view}
+              views={[view]}
               onSelectSlot={handleSelectSlot}
             />
           );
