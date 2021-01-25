@@ -242,7 +242,7 @@ export default function Home() {
                 }))}
               startAccessor="start"
               endAccessor="end"
-              style={{ height: 800 }}
+              style={{ marginBottom: 32 }}
               selectable={true}
               defaultView={view}
               views={[view]}
