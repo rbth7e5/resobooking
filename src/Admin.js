@@ -50,7 +50,8 @@ export default function Admin() {
                         "D MMM YY HH:mm"
                       )} to ${moment(e.end.dateTime.toDate()).format(
                         "D MMM YY HH:mm"
-                      )} ${e.location}`}
+                      )} ${e.location}
+                      Recur: ${e.recur} Weeks: ${e.num_weeks}`}
                     />
                     {e.status ? (
                       e.status
