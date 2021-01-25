@@ -94,9 +94,9 @@ export default function Home() {
             .doc()
             .set({
                 email: data.email,
-                end: {dateTime: data.start},
+                end: {dateTime: data.end},
                 location: parseLocation(),
-                start: {dateTime: data.end},
+                start: {dateTime: data.start},
                 summary: data.song,
             });
   }
