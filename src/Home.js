@@ -83,10 +83,10 @@ export default function Home() {
 
   const handleSubmit = () => {
     if (
-      data.name == "" ||
-      data.song == "" ||
-      data.email == "" ||
-      data.location == ""
+      data.name === "" ||
+      data.song === "" ||
+      data.email === "" ||
+      data.location === ""
     ) {
       alert("please fill in all fields");
       return;
@@ -111,7 +111,7 @@ export default function Home() {
   };
 
   const parseLocation = () => {
-    if (data.location == "school") return "In School";
+    if (data.location === "school") return "In School";
     return "At Home";
   };
 
@@ -128,23 +128,22 @@ export default function Home() {
   };
 
   const parseDateTime = (date) => {
-    var hour = date.getHours();
-    var min = date.getMinutes();
-    var meridiem = "am";
-    if (hour == 0) hour = 12;
-    else if (hour == 12) meridiem = "pm";
+    let hour = date.getHours();
+    let min = date.getMinutes();
+    let meridian = "am";
+    if (hour === 0) hour = 12;
+    else if (hour === 12) meridian = "pm";
     else if (hour > 12) {
       hour -= 12;
-      meridiem = "pm";
+      meridian = "pm";
     }
-    var time_str = hour + ":" + ("0" + min).slice(-2) + meridiem;
-    return time_str;
+    return hour + ":" + ("0" + min).slice(-2) + meridian;
   };
 
   const parseDateDate = (date) => {
-    var date_str = date.toDateString();
-    var day = date_str.substring(0, 3);
-    var mmddyyyy = date_str.substring(4);
+    const date_str = date.toDateString();
+    const day = date_str.substring(0, 3);
+    const mmddyyyy = date_str.substring(4);
     return mmddyyyy + " (" + day + ")";
   };
 

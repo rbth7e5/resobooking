@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
 
 const CLIENT_ID =
