@@ -25,12 +25,12 @@ export default function Home() {
 
   const [open, setOpen] = React.useState(false);
   const [data, setData] = React.useState({
-      name:undefined,
-      song:undefined,
-      email:undefined,
-      location:'school',
-      start:undefined,
-      end:undefined,
+      name:'',
+      song:'',
+      email:'',
+      location:'',
+      start:new Date(),
+      end:new Date(),
   });
 
   const handleClose = () => {
