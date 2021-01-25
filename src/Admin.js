@@ -48,7 +48,7 @@ export default function Admin() {
                     })
                     .sort((a,b) => { // pending on top
                         if(a.status===b.status) return 0;
-                        if(a.status==undefined) return -1;
+                        if(a.status===undefined) return -1;
                         return 1;
                     })
                     .map((e, i) => (
