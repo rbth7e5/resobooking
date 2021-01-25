@@ -17,6 +17,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
+import firebase from "firebase"
+
 
 const localizer = momentLocalizer(moment);
 export default function Home() {
@@ -27,9 +29,8 @@ export default function Home() {
       song:undefined,
       email:undefined,
       location:'school',
-      date:undefined,
-      start_time:undefined,
-      end_time:undefined,
+      start:undefined,
+      end:undefined,
   });
 
   const handleClose = () => {
@@ -42,9 +43,8 @@ export default function Home() {
           song:data.song,
           email:data.email,
           location:data.location,
-          date:data.date,
-          start_time:data.start_time,
-          end_time:data.end_time,
+          start:data.start,
+          end:data.end,
       });
   }
 
@@ -54,9 +54,8 @@ export default function Home() {
           song:data.song,
           email:e.target.value,
           location:data.location,
-          date:data.date,
-          start_time:data.start_time,
-          end_time:data.end_time,
+          start:data.start,
+          end:data.end,
       });
   }
 
@@ -66,9 +65,8 @@ export default function Home() {
           song:e.target.value,
           email:data.email,
           location:data.location,
-          date:data.date,
-          start_time:data.start_time,
-          end_time:data.end_time,
+          start:data.start,
+          end:data.end,
       });
   }
 
@@ -78,47 +76,68 @@ export default function Home() {
           song:data.song,
           email:data.email,
           location:value,
-          date:data.date,
-          start_time:data.start_time,
-          end_time:data.end_time,
+          start:data.start,
+          end:data.end,
       });
   }
 
   const handleSubmit = (e) => {
-      alert("request deets: " + data.name + " " + data.song + " " + data.email +" " +data.location+ " "+data.date+data.start_time+data.end_time);
-      // TODO: submit data to database
+      writeToFirebase();
       setOpen(false);
+      alert("request submitted!");
+  }
+
+  const writeToFirebase = () => {
+        const db = firebase.firestore();
+        db
+            .collection("events")
+            .doc()
+            .set({
+                email: data.email,
+                end: {dateTime: data.start},
+                location: parseLocation(),
+                start: {dateTime: data.end},
+                summary: data.song,
+            });
+  }
+
+  const parseLocation = () => {
+      if(data.location=="school") return "In School";
+      return "At Home";
   }
 
   const handleSelectSlot = ({start,end}) => {
-      var [date, start_time] = parseDate(start);
-      var [end_date, end_time] = parseDate(end);
       setData({
           name:data.name,
           song:data.song,
           email:data.email,
           location:data.location,
-          date:date,
-          start_time:start_time,
-          end_time:end_time,
+          start:start,
+          end:end,
       });
       setOpen(true);
   };
 
-  const parseDate = (date) => {
+  const parseDateTime = (date) => {
       var hour = date.getHours();
       var min = date.getMinutes();
       var meridiem = 'am';
       if(hour==0) hour=12;
+      else if(hour==12) meridiem = 'pm';
       else if(hour>12) {
           hour -= 12;
           meridiem = 'pm';
       }
-      var date_str = date.toDateString();
       var time_str = hour+":"+("0"+min).slice(-2)+meridiem;
-      return [date_str, time_str];
+      return time_str;
   }
 
+  const parseDateDate = (date) => {
+      var date_str = date.toDateString();
+      var day = date_str.substring(0,3);
+      var mmddyyyy = date_str.substring(4);
+      return mmddyyyy+" ("+day+")";
+  }
 
   return (
     <Container>
@@ -142,7 +161,7 @@ export default function Home() {
         <DialogTitle id="form-dialog-title">Request for timeslot</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            You selected: {data.date+" "+data.start_time+" to "+data.end_time}<br />
+            You selected: {parseDateDate(data.start)+" "+parseDateTime(data.start)+" to "+parseDateTime(data.end)}<br />
             Please fill in your details below to submit your request
           </DialogContentText>
           <TextField
