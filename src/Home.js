@@ -156,6 +156,8 @@ export default function Home() {
             end: { dateTime: moment(data.end).add(7*i,'days').toDate() },
             location: parseLocation(),
             summary: data.song,
+            recur: data.recur,
+            num_weeks: data.recur ? parseInt(data.num_weeks) : null,
           });
     }
   };
