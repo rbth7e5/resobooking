@@ -35,7 +35,6 @@ export default function Admin() {
         <Button component={Link} to="/">
           Booking Page
         </Button>
-        <p>Your access token is {accessToken}</p>
         <Auth accessToken={accessToken} setAccessToken={setAccessToken} />
         <FirestoreCollection path="/events/">
           {(doc) => {
@@ -95,6 +94,10 @@ export default function Admin() {
   return (
     <Container>
       <p>Please Login with a Resonance Admin Account!</p>
+      <p>
+        Please also enable third party cookies in your browser if not the login
+        will fail :(
+      </p>
       <Auth accessToken={accessToken} setAccessToken={setAccessToken} />
     </Container>
   );
