@@ -150,8 +150,10 @@ export default function Home() {
   return (
     <Container>
       <p>
-        Please select your desired timeslot by dragging on the calendar. Make
-        sure it doesn't clash!
+        Please select your desired timeslot by dragging on the calendar. If you
+        are planning to practice in school, make sure your slot doesn't clash
+        with other slots that are also in school! Max 2 hours pls don't be
+        greedy.
       </p>
       <Button component={Link} to="/admin">
         Admin Access
@@ -166,7 +168,7 @@ export default function Home() {
               events={d.value
                 .filter((e) => e.status !== "rejected")
                 .map((e) => ({
-                  title: `${e.summary} ${
+                  title: `${e.summary} (${e.location}) ${
                     e.status ? "(Approved)" : "(Pending)"
                   }`,
                   start: e.start.dateTime.toDate(),
