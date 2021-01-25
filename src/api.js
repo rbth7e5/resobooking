@@ -44,3 +44,10 @@ export async function rejectEvent(event) {
     to_email: event.email,
   });
 }
+
+export async function notifyNewRequest(song) {
+  await emailjs.send("service_pjlhoib", "template_z98yqta", {
+    from_name: "Resonance Booking System",
+    group_name: song,
+  });
+}

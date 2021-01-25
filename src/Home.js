@@ -21,6 +21,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import firebase from "firebase";
 import { FirestoreCollection } from "@react-firebase/firestore";
 import { Link } from "react-router-dom";
+import { notifyNewRequest } from "./api";
 
 const localizer = momentLocalizer(moment);
 export default function Home() {
@@ -118,7 +119,7 @@ export default function Home() {
     });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (
       data.name === "" ||
       data.song === "" ||
@@ -146,6 +147,7 @@ export default function Home() {
     }
 
     writeToFirebase();
+    await notifyNewRequest(data.song);
     setOpen(false);
     alert("request submitted!");
   };
