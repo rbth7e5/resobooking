@@ -42,7 +42,16 @@ export default function Admin() {
               "Loading"
             ) : (
               <List>
-                {doc.value.map((e, i) => (
+                {doc.value
+                    .sort((a,b) => { // reverse order date
+                        return b.start.dateTime - a.start.dateTime;
+                    })
+                    .sort((a,b) => { // pending on top
+                        if(a.status===b.status) return 0;
+                        if(a.status==undefined) return -1;
+                        return 1;
+                    })
+                    .map((e, i) => (
                   <ListItem key={i}>
                     <ListItemText
                       primary={`Song: ${e.summary} Name: ${e.name} Email: ${e.email}`}
@@ -99,6 +108,9 @@ export default function Admin() {
         Please also enable third party cookies in your browser if not the login
         will fail :(
       </p>
+      <Button component={Link} to="/">
+        Booking Page
+      </Button>
       <Auth accessToken={accessToken} setAccessToken={setAccessToken} />
     </Container>
   );
