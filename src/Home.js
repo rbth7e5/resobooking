@@ -136,8 +136,11 @@ export default function Home() {
       if (data.num_weeks === "") {
         alert("please enter number of weeks or uncheck recurring");
         return;
-      } else if (isNaN(parseInt(data.num_weeks))) {
-        alert("please enter a number for number of weeks");
+      } else if (
+        isNaN(parseInt(data.num_weeks)) ||
+        parseInt(data.num_weeks) < 2
+      ) {
+        alert("please enter a number larger than 1 for number of weeks");
         return;
       }
     }
