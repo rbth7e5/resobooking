@@ -35,7 +35,6 @@ export default function Admin() {
         <Button component={Link} to="/">
           Booking Page
         </Button>
-        <p>Your access token is {accessToken}</p>
         <Auth accessToken={accessToken} setAccessToken={setAccessToken} />
         <FirestoreCollection path="/events/">
           {(doc) => {
