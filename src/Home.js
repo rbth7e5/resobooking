@@ -16,6 +16,7 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import Checkbox from "@material-ui/core/Checkbox";
 
 import firebase from "firebase";
 import { FirestoreCollection } from "@react-firebase/firestore";
@@ -31,6 +32,8 @@ export default function Home() {
     location: "",
     start: new Date(),
     end: new Date(),
+    recur: false,
+    num_weeks: "",
   });
 
   const handleClose = () => {
@@ -45,6 +48,8 @@ export default function Home() {
       location: data.location,
       start: data.start,
       end: data.end,
+      recur: data.recur,
+      num_weeks: data.num_weeks,
     });
   };
 
@@ -56,6 +61,8 @@ export default function Home() {
       location: data.location,
       start: data.start,
       end: data.end,
+      recur: data.recur,
+      num_weeks: data.num_weeks,
     });
   };
 
@@ -67,6 +74,8 @@ export default function Home() {
       location: data.location,
       start: data.start,
       end: data.end,
+      recur: data.recur,
+      num_weeks: data.num_weeks,
     });
   };
 
@@ -78,6 +87,34 @@ export default function Home() {
       location: value,
       start: data.start,
       end: data.end,
+      recur: data.recur,
+      num_weeks: data.num_weeks,
+    });
+  };
+
+  const handleRecurChange = (e) => {
+    setData({
+      name: data.name,
+      song: data.song,
+      email: data.email,
+      location: data.location,
+      start: data.start,
+      end: data.end,
+      recur: !data.recur,
+      num_weeks: data.num_weeks,
+    });
+  };
+
+  const handleWeekChange = (e) => {
+    setData({
+      name: data.name,
+      song: data.song,
+      email: data.email,
+      location: data.location,
+      start: data.start,
+      end: data.end,
+      recur: data.recur,
+      num_weeks: e.target.value,
     });
   };
 
@@ -91,6 +128,16 @@ export default function Home() {
       alert("please fill in all fields");
       return;
     }
+    if (data.recur) {
+      if (data.num_weeks === "") {
+        alert("please enter number of weeks or uncheck recurring");
+        return;
+      } else if (isNaN(parseInt(data.num_weeks))) {
+        alert("please enter a number for number of weeks");
+        return;
+      }
+    }
+
     writeToFirebase();
     setOpen(false);
     alert("request submitted!");
@@ -107,6 +154,8 @@ export default function Home() {
         end: { dateTime: data.end },
         location: parseLocation(),
         summary: data.song,
+        recur: data.recur,
+        num_weeks: data.recur ? parseInt(data.num_weeks) : null,
       });
   };
 
@@ -123,6 +172,8 @@ export default function Home() {
       location: data.location,
       start: start,
       end: end,
+      recur: data.recur,
+      num_weeks: data.num_weeks,
     });
     setOpen(true);
   };
@@ -146,6 +197,19 @@ export default function Home() {
     const mmddyyyy = date_str.substring(4);
     return mmddyyyy + " (" + day + ")";
   };
+
+  const recur_field = data.recur ? (
+    <TextField
+      required
+      margin="dense"
+      id="num_weeks"
+      label="How many weeks (including current selection)?"
+      type="text"
+      value={data.num_weeks}
+      fullWidth
+      onChange={handleWeekChange}
+    />
+  ) : null;
 
   return (
     <Container>
@@ -256,7 +320,16 @@ export default function Home() {
                 labelPlacement="end"
               />
             </RadioGroup>
+            <FormControlLabel
+              value="recur"
+              checked={data.recur}
+              control={<Checkbox color="primary" />}
+              label="Recurring Practices?"
+              labelPlacement="end"
+              onChange={handleRecurChange}
+            />
           </FormControl>
+          {recur_field}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
