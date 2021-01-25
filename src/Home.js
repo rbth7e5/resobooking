@@ -81,7 +81,11 @@ export default function Home() {
       });
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = () => {
+      if(data.name=='' || data.song=='' || data.email=='' || data.location=='') {
+          alert("please fill in all fields");
+          return;
+      }
       writeToFirebase();
       setOpen(false);
       alert("request submitted!");
@@ -93,10 +97,11 @@ export default function Home() {
             .collection("events")
             .doc()
             .set({
+                name: data.name,
                 email: data.email,
+                start: {dateTime: data.start},
                 end: {dateTime: data.end},
                 location: parseLocation(),
-                start: {dateTime: data.start},
                 summary: data.song,
             });
   }
@@ -142,7 +147,7 @@ export default function Home() {
   return (
     <Container>
       <p>
-        Please select a date and key in your desired time. Make sure it doesn't
+        Please select your desired timeslot by dragging on the calendar. Make sure it doesn't
         clash!
       </p>
       <Calendar
