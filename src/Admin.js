@@ -44,7 +44,7 @@ export default function Admin() {
               <List>
                 {doc.value
                     .map((e, i) => {
-                        e.id = doc.ids[i];
+                        e.f_id = doc.ids[i];
                         return e;
                     })
                     .sort((a,b) => {
@@ -73,7 +73,7 @@ export default function Admin() {
                         <IconButton
                           onClick={async () => {
                             await rejectEvent(e);
-                            updateStore(e.id, {
+                            updateStore(e.f_id, {
                               status: "rejected",
                             });
                           }}
@@ -88,7 +88,7 @@ export default function Admin() {
                           edge="end"
                           onClick={async () => {
                             await approveEvent(accessToken, e);
-                            updateStore(e.id, {
+                            updateStore(e.f_id, {
                               status: "approved",
                             });
                           }}
