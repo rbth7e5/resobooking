@@ -238,7 +238,7 @@ export default function Home() {
         Please select your desired timeslot by dragging on the calendar (On
         mobile, tap and hold before dragging). If you are planning to practise
         in school, make sure your slot doesn't clash with other slots that are
-        also in school! Max 2 hours pls don't be greedy.
+        also in school! Max 2 hours pls if in school don't be greedy.
       </p>
       <Button component={Link} to="/admin">
         Admin Access
