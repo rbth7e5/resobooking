@@ -42,7 +42,20 @@ export default function Admin() {
               "Loading"
             ) : (
               <List>
-                {doc.value.map((e, i) => (
+                {doc.value
+                    .map((e, i) => {
+                        e.id = doc.ids[i];
+                        return e;
+                    })
+                    .sort((a,b) => {
+                        return b.start.dateTime - a.start.dateTime;
+                    })
+                    .sort((a,b) => {
+                        if(a.status===b.status) return 0;
+                        if(a.status===undefined) return -1;
+                        return 1;
+                    })
+                    .map((e, i) => (
                   <ListItem key={i}>
                     <ListItemText
                       primary={`Song: ${e.summary} Name: ${e.name} Email: ${e.email}`}
@@ -60,7 +73,7 @@ export default function Admin() {
                         <IconButton
                           onClick={async () => {
                             await rejectEvent(e);
-                            updateStore(doc.ids[i], {
+                            updateStore(e.id, {
                               status: "rejected",
                             });
                           }}
@@ -75,7 +88,7 @@ export default function Admin() {
                           edge="end"
                           onClick={async () => {
                             await approveEvent(accessToken, e);
-                            updateStore(doc.ids[i], {
+                            updateStore(e.id, {
                               status: "approved",
                             });
                           }}
