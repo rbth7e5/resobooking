@@ -146,9 +146,9 @@ export default function Home() {
       }
     }
 
+    setOpen(false);
     writeToFirebase();
     await notifyNewRequest(data.song);
-    setOpen(false);
     alert("request submitted!");
   };
 

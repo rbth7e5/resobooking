@@ -16,38 +16,40 @@ export async function approveEvent(accessToken, event) {
       body: JSON.stringify(event),
     }
   );
-  if (response.ok) {
-    await emailjs.send("service_pjlhoib", "template_ng0dn7k", {
-      from_name: "NUS Resonance Practice Booking System",
-      to_name: event.name,
-      message: `Your booking request for ${
-        event.summary
-      } from ${moment(event.start.dateTime).format(
-        "Do MMM YYYY HH:mm"
-      )} to ${moment(event.end.dateTime).format("Do MMM YYYY HH:mm")} has been approved.`,
-      to_email: event.email,
-    });
-  }
-}
-
-export async function rejectEvent(event) {
-  await emailjs.send("service_pjlhoib", "template_ng0dn7k", {
-    from_name: "NUS Resonance Practice Booking System",
-    to_name: event.name,
-    message: `Your booking request for ${
-      event.summary
-    } from ${moment(event.start.dateTime.toDate()).format(
-      "Do MMM YYYY HH:mm"
-    )} to ${moment(event.end.dateTime.toDate()).format(
-      "Do MMM YYYY HH:mm"
-    )} has been rejected. Please modify your booking to ensure there are no clashes and that your slot does not exceed 2 hours.`,
-    to_email: event.email,
-  });
+  return response.ok;
 }
 
 export async function notifyNewRequest(song) {
   await emailjs.send("service_pjlhoib", "template_z98yqta", {
     from_name: "Resonance Booking System",
     group_name: song,
+  });
+}
+
+export async function sendApprovalEmail(event) {
+  await emailjs.send("service_pjlhoib", "template_ng0dn7k", {
+    from_name: "NUS Resonance Practice Booking System",
+    to_name: event.name,
+    message: `Your booking request for ${event.summary} from ${moment(
+      event.start.dateTime
+    ).format("Do MMM YYYY HH:mm")} to ${moment(event.end.dateTime).format(
+      "Do MMM YYYY HH:mm"
+    )} has been approved.`,
+    to_email: event.email,
+  });
+}
+
+export async function sendRejectionEmail(event) {
+  await emailjs.send("service_pjlhoib", "template_ng0dn7k", {
+    from_name: "NUS Resonance Practice Booking System",
+    to_name: event.name,
+    message: `Your booking request for ${event.summary} from ${moment(
+      event.start.dateTime.toDate()
+    ).format("Do MMM YYYY HH:mm")} to ${moment(
+      event.end.dateTime.toDate()
+    ).format(
+      "Do MMM YYYY HH:mm"
+    )} has been rejected. Please modify your booking to ensure there are no clashes and that your slot does not exceed 2 hours.`,
+    to_email: event.email,
   });
 }

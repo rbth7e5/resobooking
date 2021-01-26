@@ -14,7 +14,7 @@ import Auth from "./Auth";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import CancelIcon from "@material-ui/icons/Cancel";
 import moment from "moment";
-import { approveEvent, rejectEvent } from "./api";
+import { approveEvent, sendApprovalEmail, sendRejectionEmail } from "./api";
 import { FirestoreCollection } from "@react-firebase/firestore";
 import firebase from "firebase";
 
@@ -43,62 +43,75 @@ export default function Admin() {
             ) : (
               <List>
                 {doc.value
-                    .map((e, i) => {
-                        e.f_id = doc.ids[i];
-                        return e;
-                    })
-                    .sort((a,b) => {
-                        return b.start.dateTime - a.start.dateTime;
-                    })
-                    .sort((a,b) => {
-                        if(a.status===b.status) return 0;
-                        if(a.status===undefined) return -1;
-                        return 1;
-                    })
-                    .map((e, i) => (
-                  <ListItem key={i}>
-                    <ListItemText
-                      primary={`Song: ${e.summary} Name: ${e.name} Email: ${e.email}`}
-                      secondary={` ${moment(e.start.dateTime.toDate()).format(
-                        "D MMM YY HH:mm"
-                      )} to ${moment(e.end.dateTime.toDate()).format(
-                        "D MMM YY HH:mm"
-                      )} ${e.location}
+                  .map((e, i) => {
+                    e.f_id = doc.ids[i];
+                    return e;
+                  })
+                  .sort((a, b) => {
+                    return b.start.dateTime - a.start.dateTime;
+                  })
+                  .sort((a, b) => {
+                    if (a.status === b.status) return 0;
+                    if (a.status === undefined) return -1;
+                    return 1;
+                  })
+                  .map((e, i) => (
+                    <ListItem key={i}>
+                      <ListItemText
+                        primary={`Song: ${e.summary} Name: ${e.name} Email: ${e.email}`}
+                        secondary={` ${moment(e.start.dateTime.toDate()).format(
+                          "D MMM YY HH:mm"
+                        )} to ${moment(e.end.dateTime.toDate()).format(
+                          "D MMM YY HH:mm"
+                        )} ${e.location}
                           Recur: ${e.recur} Weeks: ${e.num_weeks}`}
-                    />
-                    {e.status ? (
-                      e.status
-                    ) : (
-                      <ListItemIcon>
-                        <IconButton
-                          onClick={async () => {
-                            await rejectEvent(e);
-                            updateStore(e.f_id, {
-                              status: "rejected",
-                            });
-                          }}
-                        >
-                          <CancelIcon />
-                        </IconButton>
-                      </ListItemIcon>
-                    )}
-                    {e.status ? null : (
-                      <ListItemSecondaryAction>
-                        <IconButton
-                          edge="end"
-                          onClick={async () => {
-                            await approveEvent(accessToken, e);
-                            updateStore(e.f_id, {
-                              status: "approved",
-                            });
-                          }}
-                        >
-                          <ThumbUpIcon />
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    )}
-                  </ListItem>
-                ))}
+                      />
+                      {e.status ? (
+                        e.status
+                      ) : (
+                        <ListItemIcon>
+                          <IconButton
+                            onClick={async () => {
+                              try {
+                                updateStore(e.f_id, {
+                                  status: "rejected",
+                                });
+                                await sendRejectionEmail(e);
+                              } catch (err) {
+                                alert(err.message);
+                              }
+                            }}
+                          >
+                            <CancelIcon />
+                          </IconButton>
+                        </ListItemIcon>
+                      )}
+                      {e.status ? null : (
+                        <ListItemSecondaryAction>
+                          <IconButton
+                            edge="end"
+                            onClick={async () => {
+                              try {
+                                updateStore(e.f_id, {
+                                  status: "approved",
+                                });
+                                const ok = await approveEvent(accessToken, e);
+                                if (ok) {
+                                  await sendApprovalEmail(e);
+                                } else {
+                                  alert("Approval failed");
+                                }
+                              } catch (err) {
+                                alert(err.message);
+                              }
+                            }}
+                          >
+                            <ThumbUpIcon />
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      )}
+                    </ListItem>
+                  ))}
               </List>
             );
           }}
