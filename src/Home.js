@@ -242,6 +242,11 @@ export default function Home() {
         in school, make sure your slot doesn't clash with other slots that are
         also in school! Max 2 hours pls if in school don't be greedy.
       </p>
+      <p>
+        The calendar here is for reference purposes only. You should always
+        refer to <a href="https://bit.ly/nusresocal">bit.ly/nusresocal</a> for
+        the official confirmed bookings.
+      </p>
       <Button component={Link} to="/admin">
         Admin Access
       </Button>
