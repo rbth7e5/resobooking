@@ -232,6 +232,8 @@ export default function Home() {
   ) : null;
 
   const view = window.innerWidth < 800 ? "day" : "week";
+  const minTime = new Date();
+  minTime.setHours(8, 0, 0);
   return (
     <Container>
       <p>
@@ -266,6 +268,7 @@ export default function Home() {
               defaultView={view}
               views={[view]}
               onSelectSlot={handleSelectSlot}
+              min={minTime}
             />
           );
         }}
