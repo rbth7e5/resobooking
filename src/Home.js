@@ -238,9 +238,14 @@ export default function Home() {
     <Container>
       <p>
         Please select your desired timeslot by dragging on the calendar (On
-        mobile, tap and hold before dragging). If you are planning to practise
-        in school, make sure your slot doesn't clash with other slots that are
-        also in school! Max 2 hours pls if in school don't be greedy.
+        mobile, tap and hold before dragging). Max 2 hours pls if in school
+        don't be greedy.
+      </p>
+      <p>
+        Update: Due to overwhelming demand for in school pracs, we are allowing
+        multiple groups to practice at the same time as long as safe distancing
+        is adhered to. Please ensure there is no intermingling amongst groups as
+        well!
       </p>
       <p>
         The calendar here is for reference purposes only. You should always
